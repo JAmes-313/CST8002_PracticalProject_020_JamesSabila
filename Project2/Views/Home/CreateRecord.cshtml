@@ -1,0 +1,47 @@
+﻿@model Project2.Models.CsvDataModel
+
+@{
+    ViewData["Title"] = "Add New Record";
+}
+
+<h2>Add New Record</h2>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Year</label>
+        <input asp-for="Year" class="form-control" />
+    </div>
+
+    <div>
+        <label>Species</label>
+        <input asp-for="Species" class="form-control" />
+    </div>
+
+    <div>
+        <label>Common Name</label>
+        <input asp-for="CommonName" class="form-control" />
+    </div>
+
+    <div>
+        <label>Study Site</label>
+        <input asp-for="StudySite" class="form-control" />
+    </div>
+
+    <div>
+        <label>Associated Community</label>
+        <input asp-for="AssociatedCommunity" class="form-control" />
+    </div>
+
+    <div>
+        <label>Retinol</label>
+        <input asp-for="Retinol" class="form-control" />
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Add Record</button>
+
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+
+</form>

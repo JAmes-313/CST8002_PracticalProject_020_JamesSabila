@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<CsvDataModel>
 
 <link rel="stylesheet" href="~/css/homecsv.css" />
 
@@ -19,14 +20,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>2018</td>
-                <td>Mallotus villosus</td>
-                <td>Capelin</td>
-                <td>Coats Island</td>
-                <td>Naujaat</td>
-                <td>0</td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Year</td>
+                    <td>@item.Species</td>
+                    <td>@item.CommonName</td>
+                    <td>@item.StudySite</td>
+                    <td>@item.AssociatedCommunity</td>
+                    <td>@item.Retinol</td>
+                    <td>
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

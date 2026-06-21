@@ -1,4 +1,6 @@
-﻿namespace Project2.Models
+﻿using CsvHelper.Configuration.Attributes;
+
+namespace Project2.Models
 {
     public class CsvDataModel
     {
@@ -9,16 +11,25 @@
         private string associatedCommunityData;
         private string retinolData;
 
-        public string year { get; set; }
+        [Ignore]
+        public int Id { get; set; } 
 
-        public string species { get; set; }
+        [Name("Year/Ann�e")]
+        public string Year { get; set; }
 
-        public string commonName { get; set; }
+        [Name("Species/Esp�ce")]
+        public string Species { get; set; }
 
-        public string studySite { get; set; }
+        [Name("Common name/Nom commun")]
+        public string CommonName { get; set; }
 
-        public string associatedCommunity { get; set; }
+        [Name("Study site/Site d��tude")]
+        public string StudySite { get; set; }
 
-        public string retinol { get; set; }
+        [Name("Associated community/Collectivit� associ�e")]
+        public string AssociatedCommunity { get; set; }
+
+        [Name("Retinol/R�tinol (mg/kg)")]
+        public string Retinol { get; set; }
     }
 }
