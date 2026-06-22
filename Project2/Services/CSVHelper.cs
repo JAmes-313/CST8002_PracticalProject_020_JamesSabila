@@ -1,25 +1,32 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using Project2.Models;
 using System.Globalization;
+using System.Text;
 
 namespace Project2.Services
 {
     public class CSVHelper
     {
-        public List<CsvDataModel> LoadData(string filePath)
+        public List<CsvFullModel> LoadData(string filePath)
         {
             try
             {
                 int id = 1;
 
-                using var reader = new StreamReader(filePath);
-                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    Encoding = Encoding.UTF8,
+                    MissingFieldFound = null,
+                    HeaderValidated = null
+                };
 
-                var records = csv.GetRecords<CsvDataModel>()
-                                  .Take(100)
-                                  .ToList();
+                using var reader = new StreamReader(filePath, Encoding.UTF8);
+                using var csv = new CsvReader(reader, config);
+
+                var records = csv.GetRecords<CsvFullModel>().ToList();
                 
-                foreach (CsvDataModel? item in records)
+                foreach (CsvFullModel? item in records)
                 {
                     item.Id = id++;
                 }
@@ -28,12 +35,44 @@ namespace Project2.Services
             }
             catch (FileNotFoundException)
             {
-                return new List<CsvDataModel>();
+                return new List<CsvFullModel>();
             }
             catch (Exception)
             {
-                return new List<CsvDataModel>();
+                return new List<CsvFullModel>();
             }
+        }
+
+        public void SaveAll(string filePath, List<CsvFullModel> data)
+        {
+            using var writer = new StreamWriter(filePath, false); // overwrite file
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+
+            csv.WriteHeader<CsvFullModel>();
+            csv.NextRecord();
+
+            csv.WriteRecords(data);
+        }
+
+        public CsvDataModel GetFirstRecord(string filePath)
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Encoding = Encoding.UTF8,
+                MissingFieldFound = null,
+                HeaderValidated = null
+            };
+
+            using var reader = new StreamReader(filePath, Encoding.UTF8);
+            using var csv = new CsvReader(reader, config);
+
+            // STEP 3 → register mapping
+            csv.Context.RegisterClassMap<CsvDataMap>();
+
+            // STEP 4 → read data
+            var record = csv.GetRecords<CsvDataModel>().FirstOrDefault();
+
+            return record;
         }
     }
 }

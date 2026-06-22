@@ -38,18 +38,27 @@ namespace Project2.Controllers
             return View(data);
         }
 
-        [HttpPost]
-        public IActionResult Create(CsvDataModel model)
+        public IActionResult CreateRecord()
         {
-            string filePath = Path.Combine(_env.WebRootPath, "data", "myfile.csv");
+            //string filePath = FileHelper.GetFilePath(_env, fileName);
+            //var data = _csvService.GetFirstRecord(filePath);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CsvFullModel model)
+        {
+            string filePath = Path.Combine(_env.WebRootPath, "data", fileName);
 
             try
             {
                 using var stream = new StreamWriter(filePath, append: true);
                 using var csv = new CsvWriter(stream, CultureInfo.InvariantCulture);
 
+
                 csv.WriteRecord(model);
-                stream.WriteLine(); // move to next row
+                stream.WriteLine();
+
 
                 return RedirectToAction("Index");
             }
@@ -72,6 +81,8 @@ namespace Project2.Controllers
             {
                 data.Remove(item);
             }
+
+            _csvService.SaveAll(filePath, data);
 
             return View("Index", data);
         }
