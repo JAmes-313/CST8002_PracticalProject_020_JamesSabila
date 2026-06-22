@@ -53,26 +53,5 @@ namespace Project2.Services
 
             csv.WriteRecords(data);
         }
-
-        public CsvDataModel GetFirstRecord(string filePath)
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                Encoding = Encoding.UTF8,
-                MissingFieldFound = null,
-                HeaderValidated = null
-            };
-
-            using var reader = new StreamReader(filePath, Encoding.UTF8);
-            using var csv = new CsvReader(reader, config);
-
-            // STEP 3 → register mapping
-            csv.Context.RegisterClassMap<CsvDataMap>();
-
-            // STEP 4 → read data
-            var record = csv.GetRecords<CsvDataModel>().FirstOrDefault();
-
-            return record;
-        }
     }
 }
