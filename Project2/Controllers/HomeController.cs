@@ -5,6 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Project2.Models;
 using Project2.Services;
 
+///<summary>
+///Author: James Sabila
+///Subject: Prgramming Language Research - Practical Project 2
+///Link: [1] Microsoft Learn (n.d.) ASP.NET MVC Controllers Overview (C#). learn.microsoft.com. [online] Available at: https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/aspnet-mvc-controllers-overview-cs [Accessed on June 21, 2026].
+///</summary>
+
 namespace Project2.Controllers
 {
     public class HomeController : Controller
@@ -15,6 +21,12 @@ namespace Project2.Controllers
         private readonly IWebHostEnvironment _env;
 
         private string fileName = "Prey collection & analysis - raw data.csv";
+
+        private String ext = ".csv";
+        private String preFileName = "DataSet_";
+        private String fileNameGuiId = "";
+
+        private List<CsvFullModel> dataSet;
 
         public HomeController(ILogger<HomeController> logger, CSVHelper csvService, IWebHostEnvironment env)
         {
@@ -33,22 +45,21 @@ namespace Project2.Controllers
                 return BadRequest("Invalid file");
             }
 
-            var data = _csvService.LoadData(filePath);
+            dataSet = _csvService.LoadData(filePath);
 
-            return View(data);
+            return View(dataSet);
         }
 
         public IActionResult CreateRecord()
         {
-            //string filePath = FileHelper.GetFilePath(_env, fileName);
-            //var data = _csvService.GetFirstRecord(filePath);
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(CsvFullModel model)
         {
-            string filePath = Path.Combine(_env.WebRootPath, "data", fileName);
+            fileNameGuiId = GenerateGuiID();
+            string filePath = Path.Combine(_env.WebRootPath, "data", fileNameGuiId);
 
             try
             {
@@ -127,6 +138,12 @@ namespace Project2.Controllers
             _csvService.SaveAll(filePath, data);
 
             return RedirectToAction("Index");
+        }
+
+        private String GenerateGuiID()
+        {
+            Guid myuuid = Guid.NewGuid();
+            return preFileName + myuuid + ext ;
         }
 
         public IActionResult Privacy()

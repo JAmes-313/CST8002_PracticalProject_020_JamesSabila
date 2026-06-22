@@ -1,4 +1,10 @@
-﻿using CsvHelper;
+﻿///<summary>
+///Author: James Sabila
+///Subject: Prgramming Language Research - Practical Project 2
+///Link: [1] Josh Close (n.d.) Examples – CsvHelper. joshclose.github.io. [online] Available at: https://joshclose.github.io/CsvHelper/examples/ [Accessed on June 21, 2026].
+///</summary>
+
+using CsvHelper;
 using CsvHelper.Configuration;
 using Project2.Models;
 using System.Globalization;
