@@ -1,0 +1,43 @@
+﻿@model Project2.Models.CsvFullModel
+
+<h2>Edit Record</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Year"></label>
+        <input asp-for="Year" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Species"></label>
+        <input asp-for="Species" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="CommonName"></label>
+        <input asp-for="CommonName" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="StudySite"></label>
+        <input asp-for="StudySite" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="AssociatedCommunity"></label>
+        <input asp-for="AssociatedCommunity" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Retinol"></label>
+        <input asp-for="Retinol" class="form-control" />
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

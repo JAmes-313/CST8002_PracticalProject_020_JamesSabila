@@ -86,6 +86,48 @@ namespace Project2.Controllers
 
             return View("Index", data);
         }
+        
+        public IActionResult EditRecord(int id)
+        {
+            string filePath = FileHelper.GetFilePath(_env, fileName);
+
+            var data = _csvService.LoadData(filePath);
+
+            var item = data.FirstOrDefault(x => x.Id == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CsvFullModel model)
+        {
+            string filePath = FileHelper.GetFilePath(_env, fileName);
+
+            var data = _csvService.LoadData(filePath);
+
+            var item = data.FirstOrDefault(x => x.Id == model.Id);
+
+            if (item != null)
+            {
+                item.Year = model.Year;
+                item.Species = model.Species;
+                item.CommonName = model.CommonName;
+                item.StudySite = model.StudySite;
+                item.AssociatedCommunity = model.AssociatedCommunity;
+                item.Retinol = model.Retinol;
+
+                // update any other fields you allow editing
+            }
+
+            _csvService.SaveAll(filePath, data);
+
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Privacy()
         {
