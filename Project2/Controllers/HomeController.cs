@@ -4,6 +4,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Project2.Models;
 using Project2.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 ///<summary>
 ///Author: James Sabila
@@ -22,9 +23,9 @@ namespace Project2.Controllers
 
         private string fileName = "Prey collection & analysis - raw data.csv";
 
-        private String ext = ".csv";
-        private String preFileName = "DataSet_";
-        private String fileNameGuiId = "";
+        private string ext = ".csv";
+        private string preFileName = "DataSet_";
+        private string fileNameGuiId = "";
 
         private List<CsvFullModel> dataSet;
 
@@ -37,8 +38,8 @@ namespace Project2.Controllers
 
         public IActionResult Index()
         {
-
-            string filePath = FileHelper.GetFilePath(_env, fileName);
+            string fileSelector = DataHelper._guidId != null ? DataHelper._guidId : fileName;
+            string filePath = FileHelper.GetFilePath(_env, fileSelector);
 
             if (!FileHelper.IsExtensionFileValid(fileName))
             {
@@ -46,6 +47,7 @@ namespace Project2.Controllers
             }
 
             dataSet = _csvService.LoadData(filePath);
+            DataHelper._dataModel = dataSet;
 
             return View(dataSet);
         }
@@ -61,14 +63,17 @@ namespace Project2.Controllers
             fileNameGuiId = GenerateGuiID();
             string filePath = Path.Combine(_env.WebRootPath, "data", fileNameGuiId);
 
+            DataHelper._guidId = fileNameGuiId;
+
             try
             {
-                using var stream = new StreamWriter(filePath, append: true);
-                using var csv = new CsvWriter(stream, CultureInfo.InvariantCulture);
 
+                dataSet = DataHelper._dataModel;
 
-                csv.WriteRecord(model);
-                stream.WriteLine();
+                model.Id = dataSet.Count() + 1;
+                dataSet.Add(model);
+
+                _csvService.SaveAll(filePath, dataSet);
 
 
                 return RedirectToAction("Index");
@@ -82,9 +87,10 @@ namespace Project2.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            string filePath = FileHelper.GetFilePath(_env, fileName);
+            string fileSelector = DataHelper._guidId != null ? DataHelper._guidId : fileName;
+            string filePath = FileHelper.GetFilePath(_env, fileSelector);
 
-            var data = _csvService.LoadData(filePath);
+            var data = DataHelper._dataModel;
 
             var item = data.FirstOrDefault(x => x.Id == id);
 
@@ -100,9 +106,7 @@ namespace Project2.Controllers
         
         public IActionResult EditRecord(int id)
         {
-            string filePath = FileHelper.GetFilePath(_env, fileName);
-
-            var data = _csvService.LoadData(filePath);
+            var data = DataHelper._dataModel;
 
             var item = data.FirstOrDefault(x => x.Id == id);
 
@@ -117,9 +121,9 @@ namespace Project2.Controllers
         [HttpPost]
         public IActionResult Edit(CsvFullModel model)
         {
-            string filePath = FileHelper.GetFilePath(_env, fileName);
-
-            var data = _csvService.LoadData(filePath);
+            string fileSelector = DataHelper._guidId != null ? DataHelper._guidId : fileName;
+            string filePath = FileHelper.GetFilePath(_env, fileSelector);
+            var data = DataHelper._dataModel;
 
             var item = data.FirstOrDefault(x => x.Id == model.Id);
 
@@ -140,7 +144,7 @@ namespace Project2.Controllers
             return RedirectToAction("Index");
         }
 
-        private String GenerateGuiID()
+        private string GenerateGuiID()
         {
             Guid myuuid = Guid.NewGuid();
             return preFileName + myuuid + ext ;
