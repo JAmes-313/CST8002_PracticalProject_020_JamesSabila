@@ -27,3 +27,7 @@ td {
 tr:nth-child(even) {
     background-color: #fafafa;
 }
+
+.filter {
+    margin-bottom: 20px;
+}

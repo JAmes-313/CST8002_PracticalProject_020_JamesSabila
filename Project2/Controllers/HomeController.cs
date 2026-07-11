@@ -69,7 +69,6 @@ namespace Project2.Controllers
             {
 
                 dataSet = DataHelper._dataModel;
-
                 model.Id = dataSet.Count() + 1;
                 dataSet.Add(model);
 
@@ -142,6 +141,42 @@ namespace Project2.Controllers
             _csvService.SaveAll(filePath, data);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult FilterBy(string filterOption)
+        {
+            var data = DataHelper._dataModel;
+
+            var sortedListDesc = new List<CsvFullModel>();
+            
+            switch (filterOption)
+            {
+                case "Year":
+                    sortedListDesc = data.OrderByDescending(x => x.Year).ToList();
+                    break;
+                case "Species":
+                    sortedListDesc = data.OrderByDescending(x => x.Species).ToList();
+                    break;
+                case "Common Name":
+                    sortedListDesc = data.OrderByDescending(x => x.CommonName).ToList();
+                    break;
+                case "Study Site":
+                    sortedListDesc = data.OrderByDescending(x => x.StudySite).ToList();
+                    break;
+                case "Associated Community":
+                    sortedListDesc = data.OrderByDescending(x => x.AssociatedCommunity).ToList();
+                    break;
+                case "Retinol":
+                    sortedListDesc = data.OrderByDescending(x => x.Retinol).ToList();
+                    break;
+                default:
+                    sortedListDesc = data;
+                    break;
+            }
+            
+
+            return View("Index", sortedListDesc);
         }
 
         private string GenerateGuiID()

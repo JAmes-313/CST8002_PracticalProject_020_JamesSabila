@@ -15,6 +15,23 @@
 <div class="text-center">
     <h1>CSV Data - James Sabila</h1>
 
+    <div class="text-start filter">
+        <form asp-action="FilterBy" method="get">
+            <label>Filter By</label>
+
+            <select name="filterOption" onchange="this.form.submit()">
+                <option value="" disabled selected hidden>Select An Option</option>
+                <option value="Year">Year</option>
+                <option value="Species">Species</option>
+                <option value="Common Name">Common Name</option>
+                <option value="Study Site">Study Site</option>
+                <option value="Associated Community">Associated Community</option>
+                <option value="Retinol">Retinol</option>
+            </select>
+        </form>
+    </div>
+    
+
     <table>
         <thead>
             <tr>
@@ -24,6 +41,7 @@
                 <th>Study Site</th>
                 <th>Associated Community</th>
                 <th>Retinol</th>
+                <th class="text-center" colspan="2">Operation</th>
             </tr>
         </thead>
         <tbody>
