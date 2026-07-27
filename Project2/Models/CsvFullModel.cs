@@ -8,21 +8,26 @@
 
 namespace Project2.Models
 {
+    /// <summary>
+    /// CSV model class for the csv file
+    /// </summary>
     public class CsvFullModel
     {
+        //prperties
         [Ignore]
         public int Id { get; set; }
 
-        [Name("Year/Ann�e")]
+        //Added name properties for getting the name of the CSV file header
+        [Name("Year/Année")]
         public string Year { get; set; }
-        [Name("Species/Esp�ce")]
+        [Name("Species/Espèce")]
         public string Species { get; set; }
 
         [Name("Common name/Nom commun")]
         public string CommonName { get; set; }
-        [Name("Study site/Site d��tude")]
+        [Name("Study site/Site d’étude")]
         public string StudySite { get; set; }
-        [Name("Associated community/Collectivit� associ�e")]
+        [Name("Associated community/Collectivité associée")]
         public string AssociatedCommunity { get; set; }
 
         [Name("Lat")]
@@ -55,7 +60,7 @@ namespace Project2.Models
         [Name("Canthaxanthin/Canthaxanthine (mg/kg)")]
         public string Canthaxanthin { get; set; }
 
-        [Name("Retinol/R�tinol (mg/kg)")]
+        [Name("Retinol/Rétinol (mg/kg)")]
         public string Retinol { get; set; }
     }
 }

@@ -14,8 +14,14 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Project2.Controllers
 {
+    /// <summary>
+    /// The Home controller class from the MVC Architecture
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Fields and properties
+        /// </summary>
         private readonly ILogger<HomeController> _logger;
 
         private readonly CSVHelper _csvService;
@@ -29,6 +35,12 @@ namespace Project2.Controllers
 
         private List<CsvFullModel> dataSet;
 
+        /// <summary>
+        /// HomeController Constructor
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="csvService"></param>
+        /// <param name="env"></param>
         public HomeController(ILogger<HomeController> logger, CSVHelper csvService, IWebHostEnvironment env)
         {
             _logger = logger;
@@ -36,8 +48,13 @@ namespace Project2.Controllers
             _env = env;
         }
 
+        /// <summary>
+        /// The Index which is the default for MVC project
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
+            //properties
             string fileSelector = DataHelper._guidId != null ? DataHelper._guidId : fileName;
             string filePath = FileHelper.GetFilePath(_env, fileSelector);
 
@@ -47,28 +64,42 @@ namespace Project2.Controllers
             }
 
             dataSet = _csvService.LoadData(filePath);
+
+            //save data on memoprry even when going to other pages
             DataHelper._dataModel = dataSet;
 
             return View(dataSet);
         }
 
+        /// <summary>
+        /// CraeteRecord method that returns the View
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CreateRecord()
         {
             return View();
         }
 
+        /// <summary>
+        /// a Crate method with HTTPPost for creating the record of the CSV
+        /// a new file will be craeted for the purpose of showing the GUIID method
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create(CsvFullModel model)
         {
+            //properties
             fileNameGuiId = GenerateGuiID();
             string filePath = Path.Combine(_env.WebRootPath, "data", fileNameGuiId);
 
+            //GUIID creation
             DataHelper._guidId = fileNameGuiId;
 
             try
             {
-
                 dataSet = DataHelper._dataModel;
+                //craeting new id for the newly crated record
                 model.Id = dataSet.Count() + 1;
                 dataSet.Add(model);
 
@@ -83,9 +114,15 @@ namespace Project2.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete method for deleteing the record on csv file
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            //guiid selector
             string fileSelector = DataHelper._guidId != null ? DataHelper._guidId : fileName;
             string filePath = FileHelper.GetFilePath(_env, fileSelector);
 
@@ -103,6 +140,11 @@ namespace Project2.Controllers
             return View("Index", data);
         }
         
+        /// <summary>
+        /// the method for redirecting to editRecord view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult EditRecord(int id)
         {
             var data = DataHelper._dataModel;
@@ -117,6 +159,11 @@ namespace Project2.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Update record methoid for updating the csv file
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Edit(CsvFullModel model)
         {
@@ -128,6 +175,7 @@ namespace Project2.Controllers
 
             if (item != null)
             {
+                //getting the model for display
                 item.Year = model.Year;
                 item.Species = model.Species;
                 item.CommonName = model.CommonName;
@@ -135,7 +183,7 @@ namespace Project2.Controllers
                 item.AssociatedCommunity = model.AssociatedCommunity;
                 item.Retinol = model.Retinol;
 
-                // update any other fields you allow editing
+                
             }
 
             _csvService.SaveAll(filePath, data);
@@ -143,13 +191,19 @@ namespace Project2.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Advance Lesson - Sorting
+        /// </summary>
+        /// <param name="filterOption"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult FilterBy(string filterOption)
         {
             var data = DataHelper._dataModel;
 
             var sortedListDesc = new List<CsvFullModel>();
-            
+
+            //order the list descending based on the selected selector
             switch (filterOption)
             {
                 case "Year":
@@ -179,6 +233,10 @@ namespace Project2.Controllers
             return View("Index", sortedListDesc);
         }
 
+        /// <summary>
+        /// methiod for generating the GUIID
+        /// </summary>
+        /// <returns></returns>
         private string GenerateGuiID()
         {
             Guid myuuid = Guid.NewGuid();
