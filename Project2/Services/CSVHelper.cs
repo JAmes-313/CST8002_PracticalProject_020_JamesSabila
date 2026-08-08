@@ -40,7 +40,7 @@ namespace Project2.Services
                 };
 
                 //reading the csv file location
-                using var reader = new StreamReader(filePath, Encoding.UTF8);
+                using var reader = new StreamReader(filePath, Encoding.GetEncoding(1252));
                 using var csv = new CsvReader(reader, config);
 
                 var records = csv.GetRecords<CsvFullModel>().ToList();
@@ -69,7 +69,7 @@ namespace Project2.Services
         /// <param name="data"></param>
         public void SaveAll(string filePath, List<CsvFullModel> data)
         {
-            using var writer = new StreamWriter(filePath, false, Encoding.UTF8);
+            using var writer = new StreamWriter(filePath, false, Encoding.GetEncoding(1252));
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
             csv.WriteHeader<CsvFullModel>();
