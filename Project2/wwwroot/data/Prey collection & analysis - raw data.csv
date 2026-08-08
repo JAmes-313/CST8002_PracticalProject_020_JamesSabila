@@ -1,4 +1,4 @@
-Year/Annï¿½e,Species/Espï¿½ce,Common name/Nom commun,Study site/Site dï¿½ï¿½tude,Associated community/Collectivitï¿½ associï¿½e,Lat,Long,delta13C,delta13Cc,delta15N,delta15Nc,TP,C:N,Astaxanthin/Astaxanthine (mg/kg),Canthaxanthin/Canthaxanthine (mg/kg),Retinol/Rï¿½tinol (mg/kg)
+Year/Année,Species/Espèce,Common name/Nom commun,Study site/Site d’étude,Associated community/Collectivité associée,Lat,Long,delta13C,delta13Cc,delta15N,delta15Nc,TP,C:N,Astaxanthin/Astaxanthine (mg/kg),Canthaxanthin/Canthaxanthine (mg/kg),Retinol/Rétinol (mg/kg)
 2018,Mallotus villosus,Capelin,Coats Island,Naujaat,63.0 N,82.5 W,NA,NA,NA,NA,NA,NA,0,0,0
 2018,Mallotus villosus,Capelin,Coats Island,Naujaat,63.0 N,82.5 W,NA,NA,NA,NA,NA,NA,0,0,0
 2018,Mallotus villosus,Capelin,Coats Island,Naujaat,63.0 N,82.5 W,NA,NA,NA,NA,NA,NA,0,0,0
@@ -123,5 +123,3 @@ Year/Annï¿½e,Species/Espï¿½ce,Common name/Nom commun,Study site/Site dï¿½ï¿½tude
 2022,Cottidae larvae,Larval sculpin,Naujaat area,Naujaat,66.3 N,85.7 W,-20.59,0.91,10.69,2.03,2.65,5.43,0.57,0,0
 2022,Cottidae larvae,Larval sculpin,Naujaat area,Naujaat,66.3 N,85.7 W,-20.4,1.1,11.33,2.67,2.82,4.16,0.81,0,0
 2022,Cottidae larvae,Larval sculpin,Naujaat area,Naujaat,66.3 N,85.7 W,-19.8,1.7,13.38,4.72,3.38,4.03,0.63,0,0
-
-222,weqe,eqweq,ewqewq,eqweqw,,,,,,,,,,,231312
