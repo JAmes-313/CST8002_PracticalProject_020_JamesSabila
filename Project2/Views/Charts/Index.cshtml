@@ -1,0 +1,92 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Practical Project 4 - Charts</h1>
+    
+    <form asp-controller="Charts"method ="get" asp-action="GenerateChart">
+        <select id="chartType" name="selector">
+            <option value="speciesByStudySite">Number of Species by Study Site</option>
+            <option value="speciesByYear">Number of Species by Year</option>
+            <option value="speciesByCommunity">Number of Species by Community</option>
+        </select>
+
+        <button type="submit">Generate Chart</button>
+    </form>
+    <canvas id="speciesChart" style="width:100%;max-width:700px"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+    const chartData = @Html.Raw(TempData["ChartData"] ?? "[]");
+    var labels;
+    var values;
+    var header;
+
+    if (chartData.speciesByStudySite) {
+        labels = chartData.speciesByStudySite.map(x => x.StudySite);
+        values = chartData.speciesByStudySite.map(x => x.SpeciesCount);
+
+        header = "Number of Species by Study Site";
+    }
+    else if (chartData.speciesByYear) {
+        labels = chartData.speciesByYear.map(x => x.Year);
+        values = chartData.speciesByYear.map(x => x.SpeciesCount);
+
+        header = "Number of Species by Year";
+    }
+    else if (chartData.speciesByCommunity) {
+        labels = chartData.speciesByCommunity.map(x => x.AssociatedCommunity);
+        values = chartData.speciesByCommunity.map(x => x.SpeciesCount);
+
+        header = "Number of Species by Associated Community";
+    }
+    
+
+    
+
+    var barColors = ["red", "green", "blue", "orange", "purple"];
+    var canvas = document.getElementById("speciesChart");
+
+    canvas.style.margin = "auto";
+    new Chart(canvas, {
+        type: 'pie',
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                backgroundColor: barColors,
+                data: values
+            }]
+        },
+
+        plugins: [ChartDataLabels],
+
+        options: {           
+            plugins: {
+                 title: {
+                  display: true,
+                  text: header
+                },
+                 legend: {
+                    position: 'right'
+                },
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 16
+                    },
+                    formatter: (value) => value + ' Species'
+                }
+            }
+        }
+    });
+</script>
