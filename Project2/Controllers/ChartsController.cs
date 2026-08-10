@@ -1,4 +1,11 @@
-﻿using System.Text.Json;
+﻿///<summary>
+//////Author: James Sabila
+///Subject: Prgramming Language Research - Practical Project 4
+/// Links: [1] W3Schools (n.d.) JavaScript Chart.js. W3Schools.com. [online] Available at: https://www.w3schools.com/js/js_graphics_chartjs.asp [Accessed Aug. 1, 2026].
+///</summary>
+
+
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Project2.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -8,11 +15,20 @@ namespace Project2.Controllers
     public class ChartsController : Controller
     {
 
+        /// <summary>
+        /// default view
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Mehtod to generate chart
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GenerateChart(string selector)
         {
@@ -22,6 +38,7 @@ namespace Project2.Controllers
 
             switch (selector)
             {
+                //computation query for  spefies studied by site
                 case "speciesByStudySite":
 
                     var studySiteData = data
